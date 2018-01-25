@@ -15,8 +15,8 @@ function generateQR(){
         $('#qr_codes').text('');
         setTimeout(function(){
           $.each(qr_chunks, function(i, chunk){
-            $('#current_qr_chunk').text(i + 1);
             setTimeout(function(){
+              $('#current_qr_chunk').text(i + 1);
               var qr_obj_id = 'qrcode_' + i;
               $('#qr_codes').append('<div id="' + qr_obj_id + '" style="margin:10px; max-width: 64px; display: inline-block">'+i+'</div>');
               $('#' + qr_obj_id).qrcode({render: 'div', size: 100, text: chunk});
