@@ -10,21 +10,12 @@
 </head>
 
 <body>
-<table>
-  <tr>
-    <td width="25%">
-      <form name="uploadForm">
-        <p><input id="uploadInput" type="file" name="myFiles" onchange="generateQR();" multiple></p>
-      </form>
-      <p id="status"></p>
-      <span id="current_qr_chunk"></span>
-      <span id="qr_chunks"></span>
-    </td>
-    <td>
-      <div id="qr_playback"></div>
-    </td>
-  </tr>
-</table>
+<form name="uploadForm">
+  <p><input id="uploadInput" type="file" name="myFiles" onchange="generateQR();" multiple></p>
+</form>
+<p id="status"></p>
+<span id="current_qr_chunk"></span>
+<span id="qr_chunks"></span>
 <div id="qr_codes"></div>
 </body>
 </html>
