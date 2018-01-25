@@ -1,5 +1,6 @@
-qr_string_size = 500;
-qr_image_size = 200;
+var qr_string_size = 500;
+var qr_image_size = 200;
+var playback_delay = 500;
 
 function generateQR(){
   $('#status').text('Processing... this will take a while...');
@@ -23,7 +24,9 @@ function generateQR(){
               $('#qr_codes').append('<div id="' + qr_obj_id + '" style="margin:10px; max-width: ' + qr_image_size + 'px; display: inline-block">'+i+'</div>');
               $('#' + qr_obj_id).qrcode({render: 'canvas', size: qr_image_size, text: chunk});
               if((i + 1) === chunks_length ){
-                $('#status').text('Finished!');
+                $('#status').html('Finished! <br/>' +
+                  '<a href="#" onclick="playback()">Playback All</a> <br/>' +
+                  '<a href="#" onclick="cancelPlayback = true;">Cancel Playback</a>');
               }
             }, 1);
           });
@@ -34,5 +37,25 @@ function generateQR(){
       };
     });
   }, 1);
+}
 
+var cancelPlayback = false;
+function playback(){
+  cancelPlayback = false;
+  var all_qrs = $("[id^='qrcode_']");
+  var qr_array_size = $(all_qrs).length;
+  var current_qr = 0;
+  setInterval(function(){
+    if(!cancelPlayback){
+      $(all_qrs).hide();
+      $('#qrcode_'+ current_qr).show();
+      if((current_qr + 1) === qr_array_size){
+        $(all_qrs).show();
+      }
+      current_qr ++;
+    }else{
+      $("[id^='qrcode_']").show();
+      current_qr = 0;
+    }
+  }, playback_delay);
 }
