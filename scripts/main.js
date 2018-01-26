@@ -2,8 +2,12 @@ var qr_string_size = 500;
 var qr_image_size = 200;
 var playback_delay = 500;
 
+// This method converts the selected file to base64, then chunks up the string based on the specified
+// qr_sting size (Note: the larger the chunk size the larger you'll need to set the qr_image_size).
+// These Chunks are then converted into QR Codes and displayed in the browser.
+
 function generateQR(){
-  $('#status').text('Processing... this will take a while...');
+  $('#status').text('Processing...');
   setTimeout(function (){
     var files = document.getElementById("uploadInput").files;
     $.each(files, function(index, file){
