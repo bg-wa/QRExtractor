@@ -49,7 +49,7 @@ function playback(){
     if(!cancelPlayback){
       $(all_qrs).hide();
       $('#qrcode_'+ current_qr).show();
-      if((current_qr + 1) === qr_array_size){
+      if((current_qr) === qr_array_size){
         $(all_qrs).show();
       }
       current_qr ++;
