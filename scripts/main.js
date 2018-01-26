@@ -5,6 +5,7 @@ var playback_delay = 500;
 // This method converts the selected file to base64, then chunks up the string based on the specified
 // qr_sting size (Note: the larger the chunk size the larger you'll need to set the qr_image_size).
 // These Chunks are then converted into QR Codes and displayed in the browser.
+// Timeouts are to prevent blocking in the browser
 
 function generateQR(){
   $('#status').text('Processing...');
@@ -13,9 +14,11 @@ function generateQR(){
     $.each(files, function(index, file){
       var reader = new FileReader();
       reader.readAsDataURL(file);
+      // Convert to base64
       reader.onload = function () {
         var base64 = reader.result;
         var strRegExPattern = '.{1,'+ qr_string_size +'}';
+        // Chunk that string
         var qr_chunks = base64.match(new RegExp(strRegExPattern,'g'));
         var chunks_length = qr_chunks.length;
         $('#qr_chunks').text('/'+ chunks_length);
@@ -23,6 +26,7 @@ function generateQR(){
         setTimeout(function(){
           $.each(qr_chunks, function(i, chunk){
             setTimeout(function(){
+              // Create QR Code for Chunk
               $('#current_qr_chunk').text(i + 1);
               var qr_obj_id = 'qrcode_' + i;
               $('#qr_codes').append('<div id="' + qr_obj_id + '" style="margin:10px; max-width: ' + qr_image_size + 'px; display: inline-block">'+i+'</div>');
