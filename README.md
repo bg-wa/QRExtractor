@@ -7,4 +7,4 @@ Settings can be configured in `scripts/main.js`
 3. Wait...  The code will spit out QRs as they are processed. 
 4. Use the Playback feature to cycle through the QR codes at the desired pace.
 
-Big Buck Bunny (5.5mb) takes about 6:30 minutes.
+Big Buck Bunny (5.5mb) takes 6:30 minutes to process with the default settings, but I've gotten it to 3:57 by increasing the chunk size.
