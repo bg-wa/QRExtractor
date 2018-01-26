@@ -1,6 +1,6 @@
 var qr_string_size = 500;
 var qr_image_size = 200;
-var playback_delay = 500;
+var playback_delay = 200;
 
 // This method converts the selected file to base64, then chunks up the string based on the specified
 // qr_sting size (Note: the larger the chunk size the larger you'll need to set the qr_image_size).
@@ -58,7 +58,7 @@ function playback(){
       $(all_qrs).hide();
       $('#qrcode_'+ current_qr).show();
       if((current_qr) === qr_array_size){
-        $(all_qrs).show();
+        cancelPlayback = true;
       }
       current_qr ++;
     }else{
