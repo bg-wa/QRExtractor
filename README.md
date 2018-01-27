@@ -7,4 +7,13 @@ Settings can be configured in `scripts/main.js`
 3. Wait...  The code will spit out QRs as they are processed. 
 4. Use the Playback feature to cycle through the QR codes at the desired pace.
 
+Optional params:
+
+*base64*: Passing a base64 string to this command will auto-start processing the file.
+
+*playback*: Passing the string *finish* to this param will auto-play the results, when QR codes finish rendering.
+
+Example:
+index.html?playback=finish&base64=my_long_base64_string
+
 Big Buck Bunny (5.5mb) takes 6:30 minutes to process with the default settings, but I've gotten it to 3:57 by increasing the chunk size.
