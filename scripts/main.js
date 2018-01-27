@@ -7,6 +7,19 @@ var playback_delay = 200;
 // These Chunks are then converted into QR Codes and displayed in the browser.
 // Timeouts are to prevent blocking in the browser
 
+
+var playback_mode;
+function processParams(){
+    var file_path = getParameterByName('file_path')
+    if(file_path){
+        alert(file_path)
+        document.getElementById('uploadInput').value = file_path;
+        document.getElementById('uploadForm').submit();
+    }
+
+    playback_mode = getParameterByName('playback')
+}
+
 var chunks_length;
 function generateQR() {
     document.getElementById('status').innerHTML = 'Processing...';
@@ -60,6 +73,9 @@ function renderQR(chunk, i) {
             document.getElementById('status').innerHTML = 'Finished! <br/>' +
                 '<a href="#" onclick="playback()">Playback All</a> <br/>' +
                 '<a href="#" onclick="cancelPlayback = true;">Cancel Playback</a>';
+            if(playback_mode == 'finish'){
+                playback();
+            }
         }
     }, 1);
 }
@@ -87,4 +103,14 @@ function playback() {
             current_qr = 0;
         }
     }, playback_delay);
+}
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
