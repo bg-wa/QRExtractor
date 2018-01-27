@@ -13,4 +13,7 @@ Optional params:
 
 *playback*: Passing the string *finish* to this param will auto-play the results, when QR codes finish rendering.
 
+Example:
+index.html?playback=finish&base64=my_long_base64_string
+
 Big Buck Bunny (5.5mb) takes 6:30 minutes to process with the default settings, but I've gotten it to 3:57 by increasing the chunk size.
