@@ -10,11 +10,9 @@ var playback_delay = 200;
 
 var playback_mode;
 function processParams(){
-    var file_path = getParameterByName('file_path')
-    if(file_path){
-        alert(file_path)
-        document.getElementById('uploadInput').value = file_path;
-        document.getElementById('uploadForm').submit();
+    var base64 = getParameterByName('base64')
+    if(base64){
+        chunk_base64(base64)
     }
 
     playback_mode = getParameterByName('playback')
@@ -32,18 +30,7 @@ function generateQR() {
             // Convert to base64
             reader.onload = function () {
                 var base64 = reader.result;
-                var strRegExPattern = '.{1,' + qr_string_size + '}';
-                // Chunk that string
-                var qr_chunks = base64.match(new RegExp(strRegExPattern, 'g'));
-                chunks_length = qr_chunks.length;
-                document.getElementById('qr_chunks').innerHTML = '/' + chunks_length;
-                document.getElementById('qr_codes').innerHTML = '';
-                setTimeout(function () {
-                    for (var i = 0; i < qr_chunks.length; i++) {
-                        var chunk = qr_chunks[i];
-                        renderQR(chunk, i)
-                    }
-                }, 1);
+                chunk_base64(base64)
             };
             reader.onerror = function (error) {
                 console.log('Error: ', error);
@@ -51,6 +38,22 @@ function generateQR() {
         }
     }, 1);
 }
+
+function chunk_base64(base64){
+    var strRegExPattern = '.{1,' + qr_string_size + '}';
+    // Chunk that string
+    var qr_chunks = base64.match(new RegExp(strRegExPattern, 'g'));
+    chunks_length = qr_chunks.length;
+    document.getElementById('qr_chunks').innerHTML = '/' + chunks_length;
+    document.getElementById('qr_codes').innerHTML = '';
+    setTimeout(function () {
+        for (var i = 0; i < qr_chunks.length; i++) {
+            var chunk = qr_chunks[i];
+            renderQR(chunk, i)
+        }
+    }, 1);
+}
+
 
 var css_string = 'margin:10px; max-width: ' + qr_image_size + 'px; display: inline-block';
 function renderQR(chunk, i) {
