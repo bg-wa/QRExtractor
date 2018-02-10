@@ -1,5 +1,4 @@
-var qr_string_size = 100;
-var qr_image_size = 200;
+var qr_string_size = 1000;
 var playback_delay = 200;
 
 // This method converts the selected file to base64, then chunks up the string based on the specified
@@ -10,7 +9,7 @@ var playback_delay = 200;
 
 var playback_mode;
 function processParams(){
-    var base64 = getParameterByName('base64')
+    var base64 = getParameterByName('base64');
     if(base64){
         chunk_base64(base64)
     }
@@ -46,36 +45,37 @@ function chunk_base64(base64){
     chunks_length = qr_chunks.length;
     document.getElementById('qr_chunks').innerHTML = '/' + chunks_length;
     document.getElementById('qr_codes').innerHTML = '';
+    var size = document.getElementById('qr_codes').clientHeight - 100;
     setTimeout(function () {
         for (var i = 0; i < qr_chunks.length; i++) {
             var chunk = qr_chunks[i];
-            renderQR(chunk, i)
+            renderQR(chunk, i, size)
         }
     }, 1);
 }
 
-
-var css_string = 'margin:10px; max-width: ' + qr_image_size + 'px; display: inline-block';
-function renderQR(chunk, i) {
+function renderQR(chunk, i, size) {
     setTimeout(function () {
         // Create QR Code for Chunk
         document.getElementById('current_qr_chunk').innerHTML = i + 1;
         var qr_obj_id = 'qrcode_' + i;
         var placeholder = document.createElement('div');
         placeholder.id = qr_obj_id;
-        placeholder.style.cssText = css_string;
         placeholder.innerHTML = i;
         document.getElementById('qr_codes').appendChild(placeholder);
         new QRCode(document.getElementById(qr_obj_id), {
-            width: qr_image_size,
-            height: qr_image_size,
+            width: size,
+            height: size,
             text: chunk,
             correctLevel : QRCode.CorrectLevel.H
         });
+        placeholder.style.display = "inline-block";
         if ((i + 1) === chunks_length) {
             document.getElementById('status').innerHTML = 'Finished! <br/>' +
-                '<a href="#" onclick="playback()">Playback All</a> <br/>' +
-                '<a href="#" onclick="cancelPlayback = true;">Cancel Playback</a>';
+                '<p>Playback:</p>' +
+                '<a href="#" onclick="playback()">Start</a> <br/>' +
+                '<a href="#" onclick="scrollPlayback()">Scroll</a> <br/>' +
+                '<a href="#" onclick="cancelPlayback = true;">Cancel</a>';
             if(playback_mode == 'finish'){
                 playback();
             }
@@ -88,24 +88,26 @@ function playback() {
     cancelPlayback = false;
     var current_qr = 0;
     setInterval(function () {
-        var all_qrs = document.querySelectorAll('[id^=qrcode_]');
-        if (!cancelPlayback) {
-            for (var index = 0; index < all_qrs.length; index++) {
-                var qr = all_qrs[index];
-                qr.style.cssText = 'display:none'
-            }
-            document.getElementById('qrcode_' + current_qr).style.cssText = css_string;
+        var qr = document.getElementById("qrcode_" + current_qr)
+        if (!cancelPlayback && qr) {
+            setAllQRCodesDisplay('none');
+            qr.style.display = "inline-block";
             current_qr++;
-            if ((current_qr) === all_qrs.length) {
+            if ((current_qr) === chunks_length) {
                 cancelPlayback = true;
             }
         } else {
-            for (var index = 0; index < all_qrs.length; index++) {
-                all_qrs[index].style.cssText = css_string;
-            }
+            setAllQRCodesDisplay('inline-block');
             current_qr = 0;
         }
     }, playback_delay);
+}
+
+function setAllQRCodesDisplay(state){
+    var all_qrs = document.querySelectorAll('[id^=qrcode_]');
+    for (var index = 0; index < all_qrs.length; index++) {
+        all_qrs[index].style.display = state;;
+    }
 }
 
 function getParameterByName(name, url) {

@@ -1,0 +1,26 @@
+html {
+    height: 100%;
+}
+body {
+    min-height: 100%;
+}
+
+#qr_codes{
+    text-align: center;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    z-index: -1;
+}
+
+#qr_codes div{
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#status{
+    position: fixed;
+}
